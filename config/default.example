@@ -1,0 +1,138 @@
+#####################################################################
+# NOTES
+#
+# cannot use '%' in config file entries
+#
+# This file may be overwritten by git pulls. To create a custom config
+# create a copy and specify to use the custom config using the -c flag
+# at program startup
+#
+#
+#####################################################################
+
+[main_config]
+# Default output directory is a subdir of the application working dir
+# don't try to use "~" in path to specify user home directory!
+output_dir = output/
+
+# Suppress tool output to terminal
+suppress_out = false
+
+# Output format for cutycapt to output webpages
+# svg,ps,pdf,itext,html,rtree,png,jpeg,mng,tiff,gif,bmp,ppm,xbm,xpm
+website_output_format = pdf
+
+#####################################################################
+# Tool config section
+#
+# Placeholders will be replaced as follows during script execution:
+#   [TARGET] - domain specified in command line or target IP addresses discovered
+#
+# Parameters for tool entries (a tool should either be a URL or command):
+#   command = command line to be executed
+#       email_regex = regex to be applied to output to extract email addresses
+#       ip_regex = regex to be applied to output to extract IP addresses
+#       dns_regex = regex to be applied to output to extract
+#       cleanup_regex = regex to clean up tool output to make more readable
+#
+#   url = OSINT site url to be captured
+#
+#   run_domain = true - command / site will be run on TLD supplied
+#   run_host = true - command / site will be run on discovered hosts
+#
+#####################################################################
+
+
+#####################################################################
+# Domains
+#
+# Runs against a TLD (e.g google.com)
+# "[TARGET]" parameter is replaced with the specified domain name
+#
+#####################################################################
+
+[nslookup]
+command = nslookup [TARGET]
+run_domain = true
+ip_regex = Address: (\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)
+
+[whois]
+command = whois [TARGET]
+run_domain = true
+email_regex = (\b[\w._-]+@[\w._-]+\.[\w]{2,4}\b)
+
+[theharvester]
+command = theharvester -d [TARGET] -b all
+run_domain = true
+email_regex = (\b[\w._-]+@[\w._-]+\.[\w]{2,4}\b)
+ip_regex = (\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)
+dns_regex = (?:\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b):(.*)
+
+[msf_email]
+command = msfconsole -n -q -x "use gather/search_email_collector;set domain [TARGET];run;exit"
+run_domain = true
+cleanup_regex = .*0m(.*)
+email_regex = (\b[\w._-]+@[\w._-]+\.[\w]{2,4}\b)
+
+[fierce]
+command = fierce -dns [TARGET]
+run_domain = true
+ip_regex = (\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)(?!-)
+dns_regex = (?:\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)\s(.*)
+
+[dnsrecon-transfer]
+command = dnsrecon -d [TARGET] -t axfr
+run_domain = true
+
+[intodns]
+url = "http://www.intodns.com/[TARGET]"
+run_domain = true
+
+[myipneighbors]
+url = "http://www.myipneighbors.net/?s=[TARGET]"
+run_domain = true
+
+[urlvoid]
+url = "http://www.urlvoid.com/scan/[TARGET]"
+run_domain = true
+
+[centralops_domain]
+url = "http://centralops.net/co/DomainDossier.aspx?addr=[TARGET]&dom_whois=true&dom_dns=true&net_whois=true"
+run_domain = true
+
+[mxtoolbox_dns]
+url = "http://mxtoolbox.com/SuperTool.aspx?action=dns:[TARGET]&run=toolpage"
+run_domain = true
+
+[shodan_domain]
+url = "http://www.shodanhq.com/search?q=[TARGET]"
+run_domain = true
+
+
+#####################################################################
+# Discovered hosts
+#
+# Runs against IP addresses / dns names discovered in initial enumerations
+# "[TARGET]" is replaced with discovered target addresses
+#
+#####################################################################
+
+[nmap-scripts]
+command = nmap -sn --script external [TARGET]
+run_host = true
+
+[myipneighbors]
+url = "http://www.myipneighbors.net/?s=[TARGET]"
+run_host = true
+
+[centralops]
+url = "http://centralops.net/co/DomainDossier.aspx?addr=[TARGET]&dom_whois=true&dom_dns=true&traceroute=true&net_whois=true&svc_scan=true"
+run_host = true
+
+[mxtoolbox_blacklist]
+url = "http://mxtoolbox.com/SuperTool.aspx?action=blacklist:[TARGET]&run=toolpage"
+run_host = true
+
+[shodan]
+url = "http://www.shodanhq.com/search?q=[TARGET]"
+run_host = true
