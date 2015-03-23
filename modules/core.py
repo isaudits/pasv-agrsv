@@ -83,10 +83,8 @@ def write_outfile(path, filename, output_text):
     file.close
 
 def list_to_text(itemlist):
-    '''
-    iterate through list and return a string of list items separated by newline
+    ''' iterate through list and return a string of the list items separated by newlines'''
     
-    '''
     output_text = ""
     for item in itemlist:
         output_text += item + "\n"

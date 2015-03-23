@@ -1,7 +1,7 @@
 #####################################################################
 # NOTES
 #
-# cannot use '%' in config file entries
+# cannot use '%' in config file entries (watch your URLs!)
 #
 # This file may be overwritten by git pulls. To create a custom config
 # create a copy and specify to use the custom config using the -c flag

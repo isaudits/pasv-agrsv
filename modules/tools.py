@@ -1,4 +1,15 @@
 #!/usr/bin/env python
+'''
+@author: Matthew C. Jones, CPA, CISA, OSCP
+IS Audits & Consulting, LLC
+TJS Deemer Dana LLP
+
+Classes for tool execution
+
+See README.md for licensing information and credits
+
+'''
+
 import re
 import os
 import core

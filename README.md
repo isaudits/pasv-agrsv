@@ -5,7 +5,7 @@ Passive recon / OSINT automation script:
 
 - Runs passive recon tools specified in config file given a TLD
 - Extracts email addresses, IP addresses, and DNS names from tool output using regex
-- Queries various OSINT sites specified in config file for TLD and saves site in specified format
+- Queries various OSINT sites specified in config file for TLD and saves result to specified format (default pdf)
 - Runs additional recon tools and website queries on IPs and DNS names found from initial TLD analysis
 
 ---------------------------------------------------------------------------------------------------
@@ -30,6 +30,7 @@ Script tested on Kali Linux as well as OSX and should function on UNIX-based sys
 ---------------------------------------------------------------------------------------------------
 ##Todo
 
+- Cross reference and merging of IP & DNS hosts discovered
 - HTML index page to summarize all output
 - Scrape cutycapt output for targets & emails (convert to text first?)
 - Direct output of tool output to file instead of command line output where supported (e.g. metagoofil)
