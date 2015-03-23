@@ -147,10 +147,17 @@ for tool in tools:
             instance.run()
             instances.append(instance)
 
-print "\nDetected IP addresses: " + str(ip_list)
-print "Detected dns aliases: " + str(dns_list)
-print "Detected email addresses: " + str(email_list)
+str_ip = modules.core.list_to_text(ip_list)
+modules.core.write_outfile(output_dir, "summary-ip.txt", str_ip)
+print "\nDetected IP addresses:\n" + str_ip + "\n"
 
-modules.core.write_list_to_file(ip_list, output_dir, "summary-ip.txt")
-modules.core.write_list_to_file(dns_list, output_dir, "summary-dns.txt")
-modules.core.write_list_to_file(email_list, output_dir, "summary-emails.txt")
+str_dns = modules.core.list_to_text(dns_list)
+modules.core.write_outfile(output_dir, "summary-dns.txt", str_dns)
+print "Detected dns aliases:\n" + str_dns + "\n"
+
+str_emails = modules.core.list_to_text(email_list)
+modules.core.write_outfile(output_dir, "summary-emails.txt", str_emails)
+print "Detected email addresses:\n" + str_emails + "\n"
+
+
+print "\nScript execution completed!"

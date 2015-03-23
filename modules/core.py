@@ -82,17 +82,15 @@ def write_outfile(path, filename, output_text):
     file.write(output_text)
     file.close
 
-def write_list_to_file(itemlist, output_dir, filename):
+def list_to_text(itemlist):
     '''
-    iterate through list and write all items to a text file
+    iterate through list and return a string of list items separated by newline
     
     '''
     output_text = ""
     for item in itemlist:
         output_text += item + "\n"
-
-    
-    write_outfile(output_dir, filename, output_text)
+    return output_text
 
 if __name__ == '__main__':
     #self test code goes here!!!
