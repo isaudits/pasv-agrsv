@@ -33,7 +33,7 @@ class instance(tool):
         self.ip = []
         self.dns = []
         
-    def parse_instance_from_tool(self, tool):
+    def build_instance_from_tool(self, tool):
         '''
         Accepts a tool object, copies parzmeters to an instance object, and returns
         the instance object for execution

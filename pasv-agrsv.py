@@ -110,7 +110,7 @@ for tool in tools:
     if tool.run_domain == True:
         print "\nRunning " + tool.name + "..."
         instance = modules.tools.instance()
-        instance.parse_instance_from_tool(tool)
+        instance.build_instance_from_tool(tool)
         
         instance.target = domain
         instance.output_dir = output_dir
@@ -137,7 +137,7 @@ for tool in tools:
         for target in ip_list:
             print "Checking " + target + "..."
             instance = modules.tools.instance()
-            instance.parse_instance_from_tool(tool)
+            instance.build_instance_from_tool(tool)
             
             instance.target = target
             instance.output_dir = output_dir
