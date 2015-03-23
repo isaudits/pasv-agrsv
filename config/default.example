@@ -39,6 +39,7 @@ website_output_format = pdf
 #
 #   run_domain = true - command / site will be run on TLD supplied
 #   run_host = true - command / site will be run on discovered hosts
+#   output_subdir = subdirectory of main output directory for tool output
 #
 #####################################################################
 
@@ -55,11 +56,13 @@ website_output_format = pdf
 command = nslookup [TARGET]
 run_domain = true
 ip_regex = Address: (\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)
+output_subdir = domain
 
 [whois]
 command = whois [TARGET]
 run_domain = true
 email_regex = (\b[\w._-]+@[\w._-]+\.[\w]{2,4}\b)
+output_subdir = domain
 
 [theharvester]
 command = theharvester -d [TARGET] -b all
@@ -67,46 +70,56 @@ run_domain = true
 email_regex = (\b[\w._-]+@[\w._-]+\.[\w]{2,4}\b)
 ip_regex = (\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)
 dns_regex = (?:\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b):(.*)
+output_subdir = domain
 
 [msf_email]
 command = msfconsole -n -q -x "use gather/search_email_collector;set domain [TARGET];run;exit"
 run_domain = true
 cleanup_regex = .*0m(.*)
 email_regex = (\b[\w._-]+@[\w._-]+\.[\w]{2,4}\b)
+output_subdir = domain
 
 [fierce]
 command = fierce -dns [TARGET]
 run_domain = true
 ip_regex = (\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)(?!-)
 dns_regex = (?:\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)\s(.*)
+output_subdir = domain
 
 [dnsrecon-transfer]
 command = dnsrecon -d [TARGET] -t axfr
 run_domain = true
+output_subdir = domain
 
 [intodns]
 url = "http://www.intodns.com/[TARGET]"
 run_domain = true
+output_subdir = domain
 
 [myipneighbors]
 url = "http://www.myipneighbors.net/?s=[TARGET]"
 run_domain = true
+output_subdir = domain
 
 [urlvoid]
 url = "http://www.urlvoid.com/scan/[TARGET]"
 run_domain = true
+output_subdir = domain
 
 [centralops_domain]
 url = "http://centralops.net/co/DomainDossier.aspx?addr=[TARGET]&dom_whois=true&dom_dns=true&net_whois=true"
 run_domain = true
+output_subdir = domain
 
 [mxtoolbox_dns]
 url = "http://mxtoolbox.com/SuperTool.aspx?action=dns:[TARGET]&run=toolpage"
 run_domain = true
+output_subdir = domain
 
 [shodan_domain]
 url = "http://www.shodanhq.com/search?q=[TARGET]"
 run_domain = true
+output_subdir = domain
 
 
 #####################################################################
@@ -120,19 +133,24 @@ run_domain = true
 [nmap-scripts]
 command = nmap -sn --script external [TARGET]
 run_host = true
+output_subdir = hosts
 
 [myipneighbors]
 url = "http://www.myipneighbors.net/?s=[TARGET]"
 run_host = true
+output_subdir = hosts
 
 [centralops]
 url = "http://centralops.net/co/DomainDossier.aspx?addr=[TARGET]&dom_whois=true&dom_dns=true&traceroute=true&net_whois=true&svc_scan=true"
 run_host = true
+output_subdir = hosts
 
 [mxtoolbox_blacklist]
 url = "http://mxtoolbox.com/SuperTool.aspx?action=blacklist:[TARGET]&run=toolpage"
 run_host = true
+output_subdir = hosts
 
 [shodan]
 url = "http://www.shodanhq.com/search?q=[TARGET]"
 run_host = true
+output_subdir = hosts

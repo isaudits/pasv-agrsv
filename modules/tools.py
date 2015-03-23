@@ -18,6 +18,7 @@ class tool:
         self.ip_regex = ""
         self.dns_regex = ""
         self.cleanup_regex = ""
+        self.output_subdir = ""
 
 class instance(tool):
     def __init__(self):
@@ -47,6 +48,7 @@ class instance(tool):
         self.ip_regex = tool.ip_regex
         self.dns_regex = tool.dns_regex
         self.cleanup_regex = tool.cleanup_regex
+        self.output_subdir = tool.output_subdir
         
         
     def run(self):
@@ -56,7 +58,7 @@ class instance(tool):
         if self.command:
             self.command = self.command.replace("[TARGET]", self.target)
             self.command_result = core.execute(self.command, self.suppress_out)
-            core.write_outfile(self.output_dir, self.name+ "_" + self.target + ".txt", self.command_result)
+            core.write_outfile(os.path.join(self.output_dir, self.output_subdir), self.name+ "_" + self.target + ".txt", self.command_result)
             
             if self.email_regex:
                 self.emails = sorted(list(set(re.findall(self.email_regex, self.command_result))))
@@ -72,7 +74,7 @@ class instance(tool):
                 
         if self.url:
             self.url = self.url.replace("[TARGET]", self.target)
-            command = "cutycapt --url="+self.url+" --out="+os.path.join(self.output_dir, self.name + "_" + self.target + "." + self.website_output_format)
+            command = "cutycapt --url="+self.url+" --out="+os.path.join(self.output_dir, self.output_subdir, self.name + "_" + self.target + "." + self.website_output_format)
             core.execute(command, self.suppress_out)
         
 if __name__ == '__main__':

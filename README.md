@@ -12,7 +12,9 @@ Passive recon / OSINT automation script:
 ##Notes
 
 All scan parameters are pulled from config files so multiple configurations can be developed and specified with the -c flag.
-An example config file (default.example) is included and will be copied into the default path (default.cfg) upon initial launch. 
+An example config file (default.example) is included and will be copied into the default path (default.cfg) upon initial launch.
+
+Please feel free to submit bugfixes or additional tools/sites/regex for default config file!
 
 Script tested on Kali Linux as well as OSX and should function on UNIX-based systems with required dependencies.
 
@@ -29,8 +31,8 @@ Script tested on Kali Linux as well as OSX and should function on UNIX-based sys
 ##Todo
 
 - HTML index page to summarize all output
-- Subdirectory specifications in config file for tool output
-- Direct output of tool output to file instead of command line output where supported (e.g. fierce)
+- Scrape cutycapt output for targets & emails (convert to text first?)
+- Direct output of tool output to file instead of command line output where supported (e.g. metagoofil)
 - Catch keyboard interrupts and exit subprocesses without killing entire script
 - Implement regex tool output cleanup (see example in metasploit email enum section)
 - Add aggressive (non-passive) command section (for example, discover & screenshot / spider discovered websites associated with TLD)

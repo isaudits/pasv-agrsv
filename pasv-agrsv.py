@@ -103,6 +103,8 @@ for section in config.sections():
             tool.dns_regex = config.get(tool.name,"dns_regex")
         if config.has_option(tool.name, "cleanup_regex"):
             tool.cleanup_regex = config.get(tool.name,"cleanup_regex")
+        if config.has_option(tool.name, "output_subdir"):
+            tool.output_subdir = config.get(tool.name,"output_subdir")
         tools.append(tool)
 
 print "\nRunning domain tools..."
