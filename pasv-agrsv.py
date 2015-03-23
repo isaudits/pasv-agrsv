@@ -150,3 +150,7 @@ for tool in tools:
 print "\nDetected IP addresses: " + str(ip_list)
 print "Detected dns aliases: " + str(dns_list)
 print "Detected email addresses: " + str(email_list)
+
+modules.core.write_list_to_file(ip_list, output_dir, "summary-ip.txt")
+modules.core.write_list_to_file(dns_list, output_dir, "summary-dns.txt")
+modules.core.write_list_to_file(email_list, output_dir, "summary-emails.txt")
