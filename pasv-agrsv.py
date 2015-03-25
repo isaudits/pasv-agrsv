@@ -93,8 +93,10 @@ for section in config.sections():
             tool.url = config.get(tool.name,"url")
         if config.has_option(tool.name, "run_domain"):
             tool.run_domain = config.getboolean(tool.name,"run_domain")
-        if config.has_option(tool.name, "run_host"):
-            tool.run_host = config.getboolean(tool.name,"run_host")
+        if config.has_option(tool.name, "run_ip"):
+            tool.run_ip = config.getboolean(tool.name,"run_ip")
+        if config.has_option(tool.name, "run_dns"):
+            tool.run_dns = config.getboolean(tool.name,"run_dns")
         if config.has_option(tool.name, "email_regex"):
             tool.email_regex = config.get(tool.name,"email_regex")
         if config.has_option(tool.name, "ip_regex"):
@@ -132,11 +134,56 @@ ip_list = sorted(list(set(ip_list)))
 dns_list = sorted(list(set(dns_list)))
 email_list = sorted(list(set(email_list)))
 
+#Get missing IP addresses from DNS list using nslookup
+for target in dns_list:
+    instance = modules.tools.instance()
+    instance.target = target
+    instance.command = "nslookup [TARGET]"
+    instance.ip_regex = "Address: (\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)"
+    instance.output_dir = output_dir
+    instance.output_subdir = "hosts"
+    instance.suppress_out = suppress_out
+    instance.website_output_format = website_output_format
+    instance.run
+    instances.append(instance)
+
+ip_list = sorted(list(set(ip_list)))
+
+#Get missing DNS addresses from IP list using nslookup
+for target in ip_list:
+    instance = modules.tools.instance()
+    instance.target = target
+    instance.command = "nslookup [TARGET]"
+    instance.dns_regex = "name = (.*)"
+    instance.output_dir = output_dir
+    instance.output_subdir = "hosts"
+    instance.suppress_out = suppress_out
+    instance.website_output_format = website_output_format
+    instance.run
+    instances.append(instance)
+
+dns_list = sorted(list(set(dns_list)))
+
 print "\nRunning host tools..."
 for tool in tools:
-    if tool.run_host == True:
+    if tool.run_ip == True:
         print "\nRunning " + tool.name + "..."
         for target in ip_list:
+            print "Checking " + target + "..."
+            instance = modules.tools.instance()
+            instance.build_instance_from_tool(tool)
+            
+            instance.target = target
+            instance.output_dir = output_dir
+            instance.suppress_out = suppress_out
+            instance.website_output_format = website_output_format
+            
+            instance.run()
+            instances.append(instance)
+            
+    if tool.run_dns == True:
+        print "\nRunning " + tool.name + "..."
+        for target in dns_list:
             print "Checking " + target + "..."
             instance = modules.tools.instance()
             instance.build_instance_from_tool(tool)

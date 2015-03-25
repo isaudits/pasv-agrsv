@@ -30,7 +30,6 @@ Script tested on Kali Linux as well as OSX and should function on UNIX-based sys
 ---------------------------------------------------------------------------------------------------
 ##Todo
 
-- Cross reference and merging of IP & DNS hosts discovered
 - HTML index page to summarize all output
 - Scrape cutycapt output for targets & emails (convert to text first?)
 - Direct output of tool output to file instead of command line output where supported (e.g. metagoofil)

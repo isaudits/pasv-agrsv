@@ -24,7 +24,8 @@ class tool:
         self.command = ""
         self.url = ""
         self.run_domain = False
-        self.run_host = False
+        self.run_ip = False
+        self.run_dns = False
         self.email_regex = ""
         self.ip_regex = ""
         self.dns_regex = ""
@@ -47,14 +48,15 @@ class instance(tool):
         
     def build_instance_from_tool(self, tool):
         '''
-        Accepts a tool object, copies parzmeters to an instance object, and returns
+        Accepts a tool object, copies attributes to an instance object, and returns
         the instance object for execution
         '''
         self.name = tool.name
         self.command = tool.command
         self.url = tool.url
         self.run_domain = tool.run_domain
-        self.run_host = tool.run_host
+        self.run_ip = tool.run_ip
+        self.run_dns = tool.run_dns
         self.email_regex = tool.email_regex
         self.ip_regex = tool.ip_regex
         self.dns_regex = tool.dns_regex

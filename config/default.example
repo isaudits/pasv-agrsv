@@ -38,8 +38,15 @@ website_output_format = pdf
 #   url = OSINT site url to be captured
 #
 #   run_domain = true - command / site will be run on TLD supplied
-#   run_host = true - command / site will be run on discovered hosts
+#   run_ip = true - command / site will be run on discovered hosts by ip address
+#   run_dns = true - command / site will be run on discovered hosts by dns name
 #   output_subdir = subdirectory of main output directory for tool output
+#
+#   Note - DNS/IP resolution is performed so these lists will have duplicate hosts
+#   in them - it is generally better to run a tool/site against an IP address
+#   using the run_ip option rather than a dns name if possible since this is likely
+#   a more complete list of targets. 
+#   Use the run_dns option for tools / sites that require a dns name
 #
 #####################################################################
 
@@ -101,7 +108,7 @@ url = "http://www.myipneighbors.net/?s=[TARGET]"
 run_domain = true
 output_subdir = domain
 
-[urlvoid]
+[urlvoid_domain]
 url = "http://www.urlvoid.com/scan/[TARGET]"
 run_domain = true
 output_subdir = domain
@@ -123,34 +130,47 @@ output_subdir = domain
 
 
 #####################################################################
-# Discovered hosts
+# Discovered hosts (IP addresses)
 #
-# Runs against IP addresses / dns names discovered in initial enumerations
+# Runs against IP addresses discovered in initial enumerations
 # "[TARGET]" is replaced with discovered target addresses
 #
 #####################################################################
 
 [nmap-scripts]
 command = nmap -sn --script external [TARGET]
-run_host = true
+run_ip = true
 output_subdir = hosts
 
 [myipneighbors]
 url = "http://www.myipneighbors.net/?s=[TARGET]"
-run_host = true
+run_ip = true
 output_subdir = hosts
 
 [centralops]
 url = "http://centralops.net/co/DomainDossier.aspx?addr=[TARGET]&dom_whois=true&dom_dns=true&traceroute=true&net_whois=true&svc_scan=true"
-run_host = true
+run_ip = true
 output_subdir = hosts
 
 [mxtoolbox_blacklist]
 url = "http://mxtoolbox.com/SuperTool.aspx?action=blacklist:[TARGET]&run=toolpage"
-run_host = true
+run_ip = true
 output_subdir = hosts
 
 [shodan]
 url = "http://www.shodanhq.com/search?q=[TARGET]"
-run_host = true
+run_ip = true
+output_subdir = hosts
+
+#####################################################################
+# Discovered hosts (IP addresses)
+#
+# Runs against dns names discovered in initial enumerations
+# "[TARGET]" is replaced with discovered target addresses
+#
+#####################################################################
+
+[urlvoid]
+url = "http://www.urlvoid.com/scan/[TARGET]"
+run_dns = true
 output_subdir = hosts
