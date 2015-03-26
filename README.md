@@ -22,10 +22,10 @@ Script tested on Kali Linux as well as OSX and should function on UNIX-based sys
 ##Dependencies
 
 ###Python Module Dependencies:
-- none at this time
+- pyPdf (installed on Kali Linux by default)
 
-###Binary Dependencies (all installed on Kali Linux by default):
-- cutycapt
+###Binary Dependencies:
+- cutycapt (installed on Kali Linux by default)
 
 ---------------------------------------------------------------------------------------------------
 ##Todo
