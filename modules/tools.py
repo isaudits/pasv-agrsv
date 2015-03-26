@@ -71,6 +71,11 @@ class instance(tool):
         if self.command:
             self.command = self.command.replace("[TARGET]", self.target)
             self.command_result = core.execute(self.command, self.suppress_out)
+            
+            if self.cleanup_regex <> "":
+                clean_result = re.findall(self.cleanup_regex, self.command_result)
+                self.command_result = core.list_to_text(clean_result)
+            
             core.write_outfile(os.path.join(self.output_dir, self.output_subdir), self.name+ "_" + self.target + ".txt", self.command_result)
             
             if self.email_regex:

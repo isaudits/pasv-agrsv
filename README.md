@@ -34,7 +34,6 @@ Script tested on Kali Linux as well as OSX and should function on UNIX-based sys
 - Scrape cutycapt output for targets & emails (convert to text first?)
 - Direct output of tool output to file instead of command line output where supported (e.g. metagoofil)
 - Catch keyboard interrupts and exit subprocesses without killing entire script
-- Implement regex tool output cleanup (see example in metasploit email enum section)
 - Add aggressive (non-passive) command section (for example, discover & screenshot / spider discovered websites associated with TLD)
 
 ---------------------------------------------------------------------------------------------------
