@@ -14,7 +14,7 @@ Passive recon / OSINT automation script:
 All scan parameters are pulled from config files so multiple configurations can be developed and specified with the -c flag.
 An example config file (default.example) is included and will be copied into the default path (default.cfg) upon initial launch.
 
-Please feel free to submit bugfixes or additional tools/sites/regex for default config file!
+Please feel free to submit PR for bugfixes or additional tools/sites/regex for default config file - any feedback, input, or improvement is greatly appreciated!
 
 Script tested on Kali Linux as well as OSX and should function on UNIX-based systems with required dependencies.
 
@@ -33,7 +33,6 @@ Script tested on Kali Linux as well as OSX and should function on UNIX-based sys
 - HTML index page to summarize all output
 - Scrape cutycapt output for targets & emails (convert to text first?)
 - Direct output of tool output to file instead of command line output where supported (e.g. metagoofil)
-- Catch keyboard interrupts and exit subprocesses without killing entire script
 - Add aggressive (non-passive) command section (for example, discover & screenshot / spider discovered websites associated with TLD)
 
 ---------------------------------------------------------------------------------------------------

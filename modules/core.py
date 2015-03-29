@@ -66,21 +66,26 @@ def execute(command, suppress_stdout=False):
             sys.stdout.flush()
         
         return output
+    except KeyboardInterrupt:
+        print "\n[!] Keyboard Interrupt - command '%s' killed..." % command
+        print "[!] Continuing script execution..."
+        return ""
 
     except Exception as exception:
-        print '   [!] Error running command %s' % command
-        print '   [!] Exception: %s' % exception
+        print "\n[!] Error running command '%s'" % command
+        print "[!] Exception: %s" % exception
+        return ""
 
 def write_outfile(path, filename, output_text):
-    
-    if not os.path.exists(path):
-        os.makedirs(path)
+    if output_text:
+        if not os.path.exists(path):
+            os.makedirs(path)
+            
+        outfile = os.path.join(path, filename)
         
-    outfile = os.path.join(path, filename)
-    
-    file = open(outfile, 'a+')
-    file.write(output_text)
-    file.close
+        file = open(outfile, 'a+')
+        file.write(output_text)
+        file.close
 
 def list_to_text(itemlist):
     ''' iterate through list and return a string of the list items separated by newlines'''
