@@ -62,7 +62,7 @@ website_output_format = pdf
 [nslookup]
 command = nslookup [TARGET]
 run_domain = true
-ip_regex = Address: (\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)
+ip_regex = Address:\s(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})
 output_subdir = domain
 
 [whois]
@@ -147,6 +147,9 @@ output_subdir = domain
 #
 # Runs against IP addresses discovered in initial enumerations
 # "[TARGET]" is replaced with discovered target addresses
+#
+# Note - don't have to run nslookup on hosts - this is hardcoded into
+# script for host-ip resolution and association
 #
 #####################################################################
 
