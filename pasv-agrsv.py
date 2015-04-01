@@ -139,7 +139,6 @@ for target in dns_list:
     instance = modules.core.nslookup(target, output_dir, "hosts")
     instances.append(instance)
     ip_list += instance.ip
-    dns_list += instance.dns
 
 ip_list = sorted(list(set(ip_list)))
 
@@ -147,7 +146,6 @@ ip_list = sorted(list(set(ip_list)))
 for target in ip_list:
     instance = modules.core.nslookup(target, output_dir, "hosts")
     instances.append(instance)
-    ip_list += instance.ip
     dns_list += instance.dns
 
 dns_list = sorted(list(set(dns_list)))
