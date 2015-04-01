@@ -13,6 +13,7 @@ import sys
 import os
 import shutil
 import subprocess
+import tools
 
 # exit routine
 def exit_program():
@@ -47,8 +48,6 @@ def execute(command, suppress_stdout=False):
     
     By default, shell command output is also displayed in standard out, which can be suppressed
     with the boolean suppress_stdout
-    
-    TODO - catch keyboard interrupts and kill subprocesses so we can exit gracefully!
     '''
     
     output = ""
@@ -94,6 +93,31 @@ def list_to_text(itemlist):
     for item in itemlist:
         output_text += item + "\n"
     return output_text
+
+def nslookup(target, output_dir="", output_subdir=""):
+    #if no output directory is specified, command will not save output to a file
+    instance = tools.instance()
+    instance.name = "nslookup"
+    instance.target = target
+    instance.command = "nslookup [TARGET]"
+    instance.url = ""
+    instance.run_domain = False
+    instance.run_ip = True
+    instance.run_dns = True
+    instance.email_regex = ""
+    instance.ip_regex = "Address: (\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)"
+    instance.dns_regex = "name = (.*)"
+    instance.cleanup_regex = ""
+    instance.output_dir = output_dir
+    instance.output_subdir = output_subdir
+    instance.suppress_out = False
+    instance.run()
+    return instance
+
+def sanitise(string):
+    '''this function makes a string safe for use in sql query (not necessarily to prevent SQLi)'''
+    s = string.replace('\'', '\'\'')
+    return s
 
 if __name__ == '__main__':
     #self test code goes here!!!
