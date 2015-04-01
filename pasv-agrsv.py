@@ -136,17 +136,13 @@ email_list = sorted(list(set(email_list)))
 
 #Get missing IP addresses from DNS list using nslookup
 for target in dns_list:
-    instance = modules.core.nslookup(target, output_dir, "hosts")
-    instances.append(instance)
-    ip_list += instance.ip
+    ip_list += modules.core.nslookup_fwd(target)
 
 ip_list = sorted(list(set(ip_list)))
 
 #Get missing DNS addresses from IP list using nslookup
 for target in ip_list:
-    instance = modules.core.nslookup(target, output_dir, "hosts")
-    instances.append(instance)
-    dns_list += instance.dns
+    dns_list += modules.core.nslookup_rev(target)
 
 dns_list = sorted(list(set(dns_list)))
 

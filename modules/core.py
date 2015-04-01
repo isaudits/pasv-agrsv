@@ -14,6 +14,7 @@ import os
 import shutil
 import subprocess
 import tools
+import dns.resolver, dns.reversename
 
 # exit routine
 def exit_program():
@@ -94,25 +95,41 @@ def list_to_text(itemlist):
         output_text += item + "\n"
     return output_text
 
-def nslookup(target, output_dir="", output_subdir=""):
-    #if no output directory is specified, command will not save output to a file
-    instance = tools.instance()
-    instance.name = "nslookup"
-    instance.target = target
-    instance.command = "nslookup [TARGET]"
-    instance.url = ""
-    instance.run_domain = False
-    instance.run_ip = True
-    instance.run_dns = True
-    instance.email_regex = ""
-    instance.ip_regex = "Address: (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\\b" #have to double escape \b?
-    instance.dns_regex = "name = (.*)\\b"                                   #have to double escape \b?
-    instance.cleanup_regex = ""
-    instance.output_dir = output_dir
-    instance.output_subdir = output_subdir
-    instance.suppress_out = False
-    instance.run()
-    return instance
+def nslookup_fwd(address):
+    result=[]
+    try:
+        for rdata in dns.resolver.query(address):
+            result.append(str(rdata))
+        print "Forward lookup results for " + address
+        print result
+        
+    except dns.resolver.NXDOMAIN:
+        print "Error resolving DNS - No such domain %s" % address
+    except dns.resolver.Timeout:
+        print "Error resolving DNS - Timed out while resolving %s" % address
+    except dns.exception.DNSException:
+        print "Error resolving DNS - Unhandled exception"
+    
+    return result
+
+def nslookup_rev(ip):
+    result=[]
+    
+    try:
+        addr = dns.reversename.from_address(ip)
+        for rdata in dns.resolver.query(addr, "PTR"):
+            result.append(str(rdata)[:-1])
+        
+        print "Reverse lookup results for " + ip
+        print result
+        
+    except dns.resolver.NXDOMAIN:
+        print "Error resolving DNS - reverse DNS record found for %s" % ip
+    except dns.resolver.Timeout:
+        print "Error resolving DNS - Timed out while resolving %s" % ip
+    except dns.exception.DNSException:
+        print "Error resolving DNS - Unhandled exception"
+    return result
 
 def sanitise(string):
     '''this function makes a string safe for use in sql query (not necessarily to prevent SQLi)'''
@@ -121,5 +138,4 @@ def sanitise(string):
 
 if __name__ == '__main__':
     #self test code goes here!!!
-    nslookup("64.233.177.104")
     pass
