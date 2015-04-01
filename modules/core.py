@@ -105,8 +105,8 @@ def nslookup(target, output_dir="", output_subdir=""):
     instance.run_ip = True
     instance.run_dns = True
     instance.email_regex = ""
-    instance.ip_regex = "Address:\s(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"
-    instance.dns_regex = "name = (.*)"
+    instance.ip_regex = "Address: (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\\b" #have to double escape \b?
+    instance.dns_regex = "name = (.*)\\b"                                   #have to double escape \b?
     instance.cleanup_regex = ""
     instance.output_dir = output_dir
     instance.output_subdir = output_subdir
@@ -121,5 +121,5 @@ def sanitise(string):
 
 if __name__ == '__main__':
     #self test code goes here!!!
-    nslookup("www.google.com")
+    nslookup("64.233.177.104")
     pass
