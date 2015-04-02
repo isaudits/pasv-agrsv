@@ -63,6 +63,7 @@ try:
     output_dir = os.path.join(config.get("main_config", "output_dir"), domain)
     website_output_format = config.get("main_config", "website_output_format")
     suppress_out = config.getboolean("main_config", "suppress_out")
+    limit_email_domains = config.getboolean("main_config", "limit_email_domains")
 except:
     logging.error("Missing required config file sections. Check running config file against provided example\n")
     modules.core.exit_program()
@@ -121,6 +122,9 @@ for tool in tools:
         instance.suppress_out = suppress_out
         instance.website_output_format = website_output_format
         
+        if limit_email_domains:
+                instance.email_domain_filter = domain
+        
         instance.run()
         instances.append(instance)
         
@@ -163,6 +167,9 @@ for tool in tools:
             instance.suppress_out = suppress_out
             instance.website_output_format = website_output_format
             
+            if limit_email_domains:
+                instance.email_domain_filter = domain
+            
             instance.run()
             instances.append(instance)
             
@@ -177,6 +184,9 @@ for tool in tools:
             instance.output_dir = output_dir
             instance.suppress_out = suppress_out
             instance.website_output_format = website_output_format
+            
+            if limit_email_domains:
+                instance.email_domain_filter = domain
             
             instance.run()
             instances.append(instance)

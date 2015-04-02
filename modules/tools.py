@@ -41,6 +41,7 @@ class instance(tool):
         self.target = ""
         self.output_dir = ""
         self.suppress_out = False
+        self.email_domain_filter = ""
         self.website_output_format = "pdf"
         self.emails = []
         self.ip = []
@@ -84,6 +85,9 @@ class instance(tool):
             
             if self.email_regex:
                 self.emails = sorted(list(set(re.findall(self.email_regex, self.command_result))))
+                if self.email_domain_filter:
+                    self.emails = [s for s in self.emails if self.email_domain_filter in s]
+                        
                 print "Emails discovered: " + str(self.emails)
             
             if self.ip_regex:

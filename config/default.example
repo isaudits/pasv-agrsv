@@ -22,6 +22,11 @@ suppress_out = false
 # svg,ps,pdf,itext,html,rtree,png,jpeg,mng,tiff,gif,bmp,ppm,xbm,xpm
 website_output_format = pdf
 
+# Limit harvested emails to those matching specified domains
+# Setting to true (default) will only report email addresses which correspond
+# with specified TLD
+limit_email_domains = true
+
 #####################################################################
 # Tool config section
 #
