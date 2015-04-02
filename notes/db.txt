@@ -1,0 +1,4 @@
+SELECT hosts.ip, hostnames.hostname
+FROM hosts 
+INNER JOIN hosts_hostnames__hostnames_hosts ON hosts.id=hosts_hostnames__hostnames_hosts.hosts_id
+INNER JOIN hostnames on hosts_hostnames__hostnames_hosts.hostnames_id=hostnames.id

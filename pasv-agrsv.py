@@ -16,6 +16,7 @@ import os
 
 import modules.core
 import modules.tools
+import modules.db
 
 
 #------------------------------------------------------------------------------
@@ -75,6 +76,11 @@ email_list = []
 tools = []
 instances = []
 
+db_dir = os.path.join(output_dir, "db")
+if not os.path.exists(db_dir):
+    os.makedirs(db_dir)
+            
+db = modules.db.Database(os.path.join(db_dir,domain+".sqlite3"))
 
 logging.info("Parsing tools config file...")
 for section in config.sections():
@@ -136,15 +142,24 @@ email_list = sorted(list(set(email_list)))
 print "TLD discovery completed"
 print "Performing nslookup to find IP-DNS associations on discovered hosts...\n"
 
+for email in email_list:
+    modules.db.addPersonToDB(email)
+
 #Get missing IP addresses from DNS list using nslookup
 for target in dns_list:
-    ip_list += modules.core.nslookup_fwd(target)
+    addresses = modules.core.nslookup_fwd(target)
+    ip_list += addresses
+    for address in addresses:
+        modules.db.addHostToDB(address,[target])
 
 ip_list = sorted(list(set(ip_list)))
 
 #Get missing DNS addresses from IP list using nslookup
 for target in ip_list:
-    dns_list += modules.core.nslookup_rev(target)
+    hostnames = modules.core.nslookup_rev(target)
+    dns_list += hostnames
+    for hostname in hostnames:
+        modules.db.addHostToDB(target, [hostname])
 
 dns_list = sorted(list(set(dns_list)))
 
