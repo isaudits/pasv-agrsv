@@ -2,3 +2,10 @@ SELECT hosts.ip, hostnames.hostname
 FROM hosts 
 INNER JOIN hosts_hostnames__hostnames_hosts ON hosts.id=hosts_hostnames__hostnames_hosts.hosts_id
 INNER JOIN hostnames on hosts_hostnames__hostnames_hosts.hostnames_id=hostnames.id
+
+
+SELECT tool_runs.tool, tool_runs.output, hosts.ip, hostnames.hostname
+FROM tool_runs
+INNER JOIN hosts ON tool_runs.target=hosts.ip 
+INNER JOIN hosts_hostnames__hostnames_hosts ON hosts.id=hosts_hostnames__hostnames_hosts.hosts_id
+INNER JOIN hostnames on hosts_hostnames__hostnames_hosts.hostnames_id=hostnames.id

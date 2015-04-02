@@ -17,6 +17,8 @@ import os
 import modules.core
 import modules.tools
 import modules.db
+import modules.menu
+
 
 
 #------------------------------------------------------------------------------
@@ -25,10 +27,13 @@ import modules.db
 desc = "Passive footprinting automation script"
 
 parser = argparse.ArgumentParser(description=desc)
-parser.add_argument("domain", help="Domain to analyze (e.g. example.com)")
 parser.add_argument('-c','--config',
                     help='Configuration file. (default: config/default.cfg)',
                     action='store', default='config/default.cfg'
+)
+parser.add_argument('-a','--aggressive',
+                    help='Enable aggressive (non-passive recon) tools',
+                    action='store_true'
 )
 parser.add_argument('-d','--debug',
                     help='Print lots of debugging statements',
@@ -39,10 +44,19 @@ parser.add_argument('-v','--verbose',
                     help='Be verbose',
                     action="store_const",dest="loglevel",const=logging.INFO
 )
+parser.add_argument('domain', help='Single domain to analyze (e.g. example.com)',
+                    nargs='?', default = ''
+)
 args = parser.parse_args()
 
 domain = args.domain
+if domain:
+    modules.core.projectname = domain
+else:
+    modules.core.projectname = "default"
+
 config_file = args.config
+modules.core.aggressive = args.aggressive
 
 logging.basicConfig(level=args.loglevel)
 logging.info('verbose mode enabled')
@@ -56,31 +70,18 @@ config = ConfigParser.SafeConfigParser()
 config.read(config_file)
 
 try:
-    output_dir = os.path.join(config.get("main_config", "output_dir"), domain)
-    website_output_format = config.get("main_config", "website_output_format")
-    suppress_out = config.getboolean("main_config", "suppress_out")
-    limit_email_domains = config.getboolean("main_config", "limit_email_domains")
+    modules.core.output_parent_dir = config.get("main_config", "output_dir")
+    modules.core.output_dir = os.path.join(modules.core.output_parent_dir, modules.core.projectname)
+    modules.core.website_output_format = config.get("main_config", "website_output_format")
+    modules.core.suppress_out = config.getboolean("main_config", "suppress_out")
+    modules.core.limit_email_domains = config.getboolean("main_config", "limit_email_domains")
 except:
     logging.error("Missing required config file sections. Check running config file against provided example\n")
     modules.core.exit_program()
 
-
 #------------------------------------------------------------------------------
-# Main Program
+# Parse tools sections of config file
 #------------------------------------------------------------------------------
-
-is_output_dir_clean = modules.core.cleanup_routine(output_dir)
-ip_list = []
-dns_list = []
-email_list = []
-tools = []
-instances = []
-
-db_dir = os.path.join(output_dir, "db")
-if not os.path.exists(db_dir):
-    os.makedirs(db_dir)
-            
-db = modules.db.Database(os.path.join(db_dir,domain+".sqlite3"))
 
 logging.info("Parsing tools config file...")
 for section in config.sections():
@@ -109,111 +110,43 @@ for section in config.sections():
             tool.cleanup_regex = config.get(tool.name,"cleanup_regex")
         if config.has_option(tool.name, "output_subdir"):
             tool.output_subdir = config.get(tool.name,"output_subdir")
-        tools.append(tool)
+        if config.has_option(tool.name, "output_format"):
+            tool.output_format = config.get(tool.name,"output_format")
+        if config.has_option(tool.name, "aggressive"):
+            tool.aggressive = config.get(tool.name,"aggressive")
+        modules.core.tools.append(tool)
 
-print "\nRunning domain tools..."
-for tool in tools:
-    if tool.run_domain == True:
-        print "\nRunning " + tool.name + "..."
-        instance = modules.tools.Instance()
-        instance.build_instance_from_tool(tool)
-        
-        instance.target = domain
-        instance.output_dir = output_dir
-        instance.suppress_out = suppress_out
-        instance.website_output_format = website_output_format
-        
-        if limit_email_domains:
-                instance.email_domain_filter = domain
-        
-        instance.run()
-        instances.append(instance)
-        
-        ip_list += instance.ip
-        dns_list += instance.dns
-        email_list += instance.emails 
+#------------------------------------------------------------------------------
+# Main Program
+#------------------------------------------------------------------------------
 
 
-#sort and remove duplicate items from lists:
-ip_list = sorted(list(set(ip_list)))
-dns_list = sorted(list(set(dns_list)))
-email_list = sorted(list(set(email_list)))
+modules.core.change_project(modules.core.projectname)
 
-print "TLD discovery completed"
-print "Performing nslookup to find IP-DNS associations on discovered hosts...\n"
-
-for email in email_list:
-    modules.db.addPersonToDB(email)
-
-#Get missing IP addresses from DNS list using nslookup
-for target in dns_list:
-    addresses = modules.core.nslookup_fwd(target)
-    ip_list += addresses
-    for address in addresses:
-        modules.db.addHostToDB(address,[target])
-
-ip_list = sorted(list(set(ip_list)))
-
-#Get missing DNS addresses from IP list using nslookup
-for target in ip_list:
-    hostnames = modules.core.nslookup_rev(target)
-    dns_list += hostnames
-    for hostname in hostnames:
-        modules.db.addHostToDB(target, [hostname])
-
-dns_list = sorted(list(set(dns_list)))
-
-print "\nRunning host tools..."
-for tool in tools:
-    if tool.run_ip == True:
-        print "\nRunning " + tool.name + "..."
-        for target in ip_list:
-            print "Checking " + target + "..."
-            instance = modules.tools.Instance()
-            instance.build_instance_from_tool(tool)
-            
-            instance.target = target
-            instance.output_dir = output_dir
-            instance.suppress_out = suppress_out
-            instance.website_output_format = website_output_format
-            
-            if limit_email_domains:
-                instance.email_domain_filter = domain
-            
-            instance.run()
-            instances.append(instance)
-            
-    if tool.run_dns == True:
-        print "\nRunning " + tool.name + "..."
-        for target in dns_list:
-            print "Checking " + target + "..."
-            instance = modules.tools.Instance()
-            instance.build_instance_from_tool(tool)
-            
-            instance.target = target
-            instance.output_dir = output_dir
-            instance.suppress_out = suppress_out
-            instance.website_output_format = website_output_format
-            
-            if limit_email_domains:
-                instance.email_domain_filter = domain
-            
-            instance.run()
-            instances.append(instance)
-
-print "\n" + "-"*80 + "\n"
-
-str_ip = modules.core.list_to_text(ip_list)
-modules.core.write_outfile(output_dir, "summary-ip.txt", str_ip)
-print "\nDetected IP addresses:\n" + str_ip + "\n"
-
-str_dns = modules.core.list_to_text(dns_list)
-modules.core.write_outfile(output_dir, "summary-dns.txt", str_dns)
-print "Detected dns aliases:\n" + str_dns + "\n"
-
-str_emails = modules.core.list_to_text(email_list)
-modules.core.write_outfile(output_dir, "summary-emails.txt", str_emails)
-print "Detected email addresses:\n" + str_emails + "\n"
-
-
-print "\nScript execution completed!"
+if domain:
+    
+    modules.db.add_domain_to_db(domain)    #add domain parameter to db and fire off
+    
+    print "\nRunning domain tools..."
+    modules.tools.run_domain_tools()
+    
+    print "\nRunning host tools..."
+    modules.tools.run_host_tools()
+    
+    print "\nDomains tested:"
+    modules.db.get_domains_from_db()
+    
+    print "\nIP addresses identified:"
+    modules.db.get_hosts_from_db()
+    
+    print "\nHostnames identified:"
+    modules.db.get_hostnames_from_db()
+    
+    print "\nEmail addresses identified:"
+    modules.db.get_people_from_db()
+    
+    print "\nScript execution completed!"
+    modules.menu.main_menu()
+    
+else:
+    modules.menu.main_menu()

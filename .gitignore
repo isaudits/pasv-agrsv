@@ -3,6 +3,7 @@
 .pydevproject
 *.pyc
 *.cfg
+*.bak
 /output/*
 /tmp/*
 

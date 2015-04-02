@@ -11,6 +11,7 @@
 #####################################################################
 
 [main_config]
+
 # Default output directory is a subdir of the application working dir
 # don't try to use "~" in path to specify user home directory!
 output_dir = output/
@@ -32,6 +33,8 @@ limit_email_domains = true
 #
 # Placeholders will be replaced as follows during script execution:
 #   [TARGET] - domain specified in command line or target IP addresses discovered
+#   [OUTPUT] - will be replaced with output file name for tools that output to
+#               file instead of screen
 #
 # Parameters for tool entries (a tool should either be a URL or command):
 #   command = command line to be executed
@@ -45,7 +48,12 @@ limit_email_domains = true
 #   run_domain = true - command / site will be run on TLD supplied
 #   run_ip = true - command / site will be run on discovered hosts by ip address
 #   run_dns = true - command / site will be run on discovered hosts by dns name
-#   output_subdir = subdirectory of main output directory for tool output
+#   output_subdir - subdirectory of main output directory for tool output
+#   ouput_format - file extension of output file for tools that output to file
+#                   as opposed to screen
+#   aggressive = true - command is aggressive (not passive) and will directly
+#                   communicate with target. Aggressive tools only executed in
+#                   aggressive mode.
 #
 #   Note - DNS/IP resolution is performed so these lists will have duplicate hosts
 #   in them - it is generally better to run a tool/site against an IP address
@@ -65,7 +73,7 @@ limit_email_domains = true
 #####################################################################
 
 [nslookup]
-command = nslookup [TARGET]
+command = nslookup [TARGET] 8.8.8.8
 run_domain = true
 ip_regex = Address: (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)
 output_subdir = domain
@@ -200,3 +208,24 @@ output_subdir = hosts
 url = "http://toolbar.netcraft.com/site_report?url=[TARGET]"
 run_dns = true
 output_subdir = hosts
+
+#####################################################################
+# Aggressive tests
+#####################################################################
+
+[website-screenshot]
+command = cutycapt \-\-url=[TARGET] \-\-out=[OUTPUT]
+output_format = pdf
+run_ip = true
+run_dns = true
+output_subdir = hosts
+aggressive = true
+
+[webshag-spider]
+#NOTE - webshag does not like IP addresses specified in output file name
+#since we use those for naming the run output, only run on dns
+command = webshag-cli -m spider -x -f [OUTPUT] [TARGET]
+output_format = html
+run_dns = true
+output_subdir = hosts
+aggressive = true

@@ -14,8 +14,28 @@ import os
 import shutil
 import subprocess
 import logging
-import tools
+import time, datetime
 import dns.resolver, dns.reversename
+
+import db
+
+#------------------------------------------------------------------------------
+# Global variables
+#------------------------------------------------------------------------------
+output_parent_dir = ''
+output_dir = ''
+website_output_format = 'pdf'
+suppress_out = False
+limit_email_domains = True
+aggressive = False
+dbfilename = ''
+projectname = ''
+tools = []
+instances = []
+
+#------------------------------------------------------------------------------
+# Global core functions
+#------------------------------------------------------------------------------
 
 # exit routine
 def exit_program():
@@ -43,6 +63,26 @@ def check_config(config_file):
     else:
         logging.warn("Specified config file not found. Copying example config file...")
         shutil.copyfile("config/default.example", config_file)
+
+def connect_db(db_name):
+    global dbfilename
+    
+    db_dir = os.path.join(output_dir, "db")
+    if not os.path.exists(db_dir):
+        os.makedirs(db_dir)
+                
+    dbfilename = os.path.join(db_dir,db_name+".sqlite3")
+    db.Database(dbfilename)
+
+def change_project(projectname=''):
+    global output_dir
+    
+    if not projectname:
+        projectname = 'default'
+    
+    output_dir = os.path.join(output_parent_dir, projectname)
+    is_output_dir_clean = cleanup_routine(output_dir)
+    connect_db(projectname)
 
 def execute(command, suppress_stdout=False):
     '''
@@ -88,6 +128,14 @@ def write_outfile(path, filename, output_text):
         file.write(output_text)
         file.close
 
+def getTimestamp(human=False):
+    t = time.time()
+    if human:
+        timestamp = datetime.datetime.fromtimestamp(t).strftime("%d %b %Y %H:%M:%S")
+    else:
+        timestamp = datetime.datetime.fromtimestamp(t).strftime('%Y%m%d%H%M%S')
+    return timestamp
+
 def list_to_text(itemlist):
     ''' iterate through list and return a string of the list items separated by newlines'''
     
@@ -129,7 +177,7 @@ def nslookup_rev(ip):
         logging.info(result)
         
     except dns.resolver.NXDOMAIN:
-        logging.warn("Error resolving DNS - reverse DNS record found for %s" % ip)
+        logging.warn("Error resolving DNS - No reverse DNS record found for %s" % ip)
     except dns.resolver.Timeout:
         logging.warn("Error resolving DNS - Timed out while resolving %s" % ip)
     except dns.exception.DNSException:
