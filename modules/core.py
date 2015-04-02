@@ -13,6 +13,7 @@ import sys
 import os
 import shutil
 import subprocess
+import logging
 import tools
 import dns.resolver, dns.reversename
 
@@ -40,7 +41,7 @@ def check_config(config_file):
     if os.path.exists(config_file):
         pass
     else:
-        print "Specified config file not found. Copying example config file..."
+        logging.warn("Specified config file not found. Copying example config file...")
         shutil.copyfile("config/default.example", config_file)
 
 def execute(command, suppress_stdout=False):
@@ -67,13 +68,13 @@ def execute(command, suppress_stdout=False):
         
         return output
     except KeyboardInterrupt:
-        print "\n[!] Keyboard Interrupt - command '%s' killed..." % command
-        print "[!] Continuing script execution..."
+        logging.warn("\n[!] Keyboard Interrupt - command '%s' killed..." % command)
+        logging.warn("[!] Continuing script execution...")
         return ""
 
     except Exception as exception:
-        print "\n[!] Error running command '%s'" % command
-        print "[!] Exception: %s" % exception
+        logging.error("[!] Error running command '%s'" % command)
+        logging.error("[!] Exception: %s" % exception)
         return ""
 
 def write_outfile(path, filename, output_text):
@@ -97,38 +98,42 @@ def list_to_text(itemlist):
 
 def nslookup_fwd(address):
     result=[]
+    logging.info("checking dns on " + address)
     try:
         for rdata in dns.resolver.query(address):
             result.append(str(rdata))
-        print "Forward lookup results for " + address
-        print result
+        logging.info("Forward lookup results for " + address)
+        logging.info(result)
         
     except dns.resolver.NXDOMAIN:
-        print "Error resolving DNS - No such domain %s" % address
+        logging.warn("Error resolving DNS - No such domain %s" % address)
     except dns.resolver.Timeout:
-        print "Error resolving DNS - Timed out while resolving %s" % address
+        logging.warn("Error resolving DNS - Timed out while resolving %s" % address)
     except dns.exception.DNSException:
-        print "Error resolving DNS - Unhandled exception"
+        logging.warn("Error resolving DNS - Unhandled exception")
     
     return result
 
 def nslookup_rev(ip):
     result=[]
-    
+    logging.info("checking reverse dns on " + ip)
     try:
         addr = dns.reversename.from_address(ip)
         for rdata in dns.resolver.query(addr, "PTR"):
-            result.append(str(rdata)[:-1])
+            if str(rdata)[-1] == ".":
+                result.append(str(rdata)[:-1])
+            else:
+                result.append(str(rdata))
         
-        print "Reverse lookup results for " + ip
-        print result
+        logging.info("Reverse lookup results for " + ip)
+        logging.info(result)
         
     except dns.resolver.NXDOMAIN:
-        print "Error resolving DNS - reverse DNS record found for %s" % ip
+        logging.warn("Error resolving DNS - reverse DNS record found for %s" % ip)
     except dns.resolver.Timeout:
-        print "Error resolving DNS - Timed out while resolving %s" % ip
+        logging.warn("Error resolving DNS - Timed out while resolving %s" % ip)
     except dns.exception.DNSException:
-        print "Error resolving DNS - Unhandled exception"
+        logging.warn("Error resolving DNS - Unhandled exception")
     return result
 
 def sanitise(string):

@@ -76,6 +76,8 @@ class instance(tool):
                 clean_result = re.findall(self.cleanup_regex, self.command_result)
                 self.command_result = core.list_to_text(clean_result)
             
+            print ""
+            
             #if no output directory is specified, then only output to screen...
             if self.output_dir:
                 core.write_outfile(os.path.join(self.output_dir, self.output_subdir), self.name+ "_" + self.target + ".txt", self.command_result)
@@ -91,6 +93,8 @@ class instance(tool):
             if self.dns_regex:
                 self.dns = sorted(list(set(re.findall(self.dns_regex, self.command_result))))
                 print "DNS entries discovered: " + str(self.dns)
+            
+            print "\n" + "-"*80 + "\n"
                 
         if self.url:
             self.url = self.url.replace("[TARGET]", self.target)

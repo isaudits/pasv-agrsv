@@ -64,7 +64,7 @@ try:
     website_output_format = config.get("main_config", "website_output_format")
     suppress_out = config.getboolean("main_config", "suppress_out")
 except:
-    print "Missing required config file sections. Check running config file against provided example\n"
+    logging.error("Missing required config file sections. Check running config file against provided example\n")
     modules.core.exit_program()
 
 
@@ -80,7 +80,7 @@ tools = []
 instances = []
 
 
-print "Parsing tools config file..."
+logging.info("Parsing tools config file...")
 for section in config.sections():
     if section == "main_config":
         pass
@@ -134,6 +134,9 @@ ip_list = sorted(list(set(ip_list)))
 dns_list = sorted(list(set(dns_list)))
 email_list = sorted(list(set(email_list)))
 
+print "TLD discovery completed"
+print "Performing nslookup to find IP-DNS associations on discovered hosts...\n"
+
 #Get missing IP addresses from DNS list using nslookup
 for target in dns_list:
     ip_list += modules.core.nslookup_fwd(target)
@@ -177,6 +180,8 @@ for tool in tools:
             
             instance.run()
             instances.append(instance)
+
+print "\n" + "-"*80 + "\n"
 
 str_ip = modules.core.list_to_text(ip_list)
 modules.core.write_outfile(output_dir, "summary-ip.txt", str_ip)
