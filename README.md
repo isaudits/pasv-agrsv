@@ -30,6 +30,7 @@ Script tested on Kali Linux as well as OSX and should function on UNIX-based sys
 ---------------------------------------------------------------------------------------------------
 ##Todo
 
+- Store / retrieve data from sqlite database for persistence and to handle multiple domains / runs (work in progress)
 - HTML index page to summarize all output
 - Scrape cutycapt output for targets & emails (convert to text first?)
 - Direct output of tool output to file instead of command line output where supported (e.g. metagoofil)
