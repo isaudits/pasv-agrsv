@@ -15,7 +15,7 @@ import os
 import core
 
 
-class tool:
+class Tool:
     def __init__(self):
         '''
         Constructor:
@@ -32,7 +32,7 @@ class tool:
         self.cleanup_regex = ""
         self.output_subdir = ""
 
-class instance(tool):
+class Instance(Tool):
     def __init__(self):
         '''
         Constructor:

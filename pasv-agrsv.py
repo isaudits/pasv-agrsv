@@ -86,7 +86,7 @@ for section in config.sections():
     if section == "main_config":
         pass
     else:
-        tool = modules.tools.tool()
+        tool = modules.tools.Tool()
         tool.name = section
         if config.has_option(tool.name, "command"):
             tool.command = config.get(tool.name,"command")
@@ -114,7 +114,7 @@ print "\nRunning domain tools..."
 for tool in tools:
     if tool.run_domain == True:
         print "\nRunning " + tool.name + "..."
-        instance = modules.tools.instance()
+        instance = modules.tools.Instance()
         instance.build_instance_from_tool(tool)
         
         instance.target = domain
@@ -159,7 +159,7 @@ for tool in tools:
         print "\nRunning " + tool.name + "..."
         for target in ip_list:
             print "Checking " + target + "..."
-            instance = modules.tools.instance()
+            instance = modules.tools.Instance()
             instance.build_instance_from_tool(tool)
             
             instance.target = target
