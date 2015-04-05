@@ -29,10 +29,6 @@ parser.add_argument('-c','--config',
                     help='Configuration file. (default: config/default.cfg)',
                     action='store', default='config/default.cfg'
 )
-parser.add_argument('-o','--output',
-                    help='Output directory (overrides default relative path: "output")',
-                    action='store', default='output'
-)
 parser.add_argument('-d','--debug',
                     help='Print lots of debugging statements',
                     action="store_const",dest="loglevel",const=logging.DEBUG,
@@ -46,7 +42,6 @@ args = parser.parse_args()
 
 domain = args.domain
 config_file = args.config
-output_dir = args.output
 
 logging.basicConfig(level=args.loglevel)
 logging.info('verbose mode enabled')
