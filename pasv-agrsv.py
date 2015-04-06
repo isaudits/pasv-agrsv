@@ -172,7 +172,7 @@ for tool in tools:
         print "\nRunning " + tool.name + "..."
         for target in dns_list:
             print "Checking " + target + "..."
-            instance = modules.tools.instance()
+            instance = modules.tools.Instance()
             instance.build_instance_from_tool(tool)
             
             instance.target = target
