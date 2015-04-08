@@ -114,6 +114,12 @@ ip_regex = \sA\s.*\s(\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)
 dns_regex = \sA\s(\S*)\s
 output_subdir = domain
 
+[scrape_email-format.com]
+command = curl http://www.email-format.com/d/[TARGET]/ | grep -o [A-Za-z0-9_.]*@[A-Za-z0-9_.]*[.][A-Za-z]*
+run_domain = true
+output_subdir = domain
+email_regex = (\b[\w._-]+@[\w._-]+\.[\w]{2,4}\b)
+
 [intodns]
 url = "http://www.intodns.com/[TARGET]"
 run_domain = true
@@ -148,12 +154,6 @@ output_subdir = domain
 url = "http://www.shodanhq.com/search?q=[TARGET]"
 run_domain = true
 output_subdir = domain
-
-[email_format]
-url = "http://www.email-format.com/d/[TARGET]/"
-run_domain = true
-output_subdir = domain
-
 
 #####################################################################
 # Discovered hosts (IP addresses)
