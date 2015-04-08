@@ -129,6 +129,7 @@ class Instance(Tool):
                     self.emails = [s for s in self.emails if self.email_domain_filter in s]
                 
                 for email in self.emails:
+                    email = email.lower()
                     db.add_person_to_db(email)
                     
                 print "Emails discovered: " + str(self.emails)
@@ -137,6 +138,7 @@ class Instance(Tool):
                 self.dns = sorted(list(set(re.findall(self.dns_regex, self.command_result))))
                 
                 for target in self.dns:
+                    target = target.lower()
                     addresses = core.nslookup_fwd(target)
                     for address in addresses:
                         db.add_host_to_db(address,[target])
@@ -150,6 +152,7 @@ class Instance(Tool):
                 for target in self.ip:
                     hostnames = core.nslookup_rev(target)
                     for hostname in hostnames:
+                        hostname = hostname.lower()
                         db.add_host_to_db(target, [hostname])
                 
                 print "IPs discovered: " + str(self.ip)
