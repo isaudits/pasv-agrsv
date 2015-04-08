@@ -74,13 +74,15 @@ def connect_db(db_name):
     dbfilename = os.path.join(db_dir,db_name+".sqlite3")
     db.Database(dbfilename)
 
-def change_project(projectname=''):
+def change_project(project_name=''):
     global output_dir
+    global projectname
     
-    if not projectname:
-        projectname = 'default'
+    if not project_name:
+        project_name = 'default'
     
-    output_dir = os.path.join(output_parent_dir, projectname)
+    projectname = project_name
+    output_dir = os.path.join(output_parent_dir, project_name)
     is_output_dir_clean = cleanup_routine(output_dir)
     connect_db(projectname)
 
