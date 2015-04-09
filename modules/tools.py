@@ -80,12 +80,14 @@ class Instance(Tool):
         
         if db.check_if_tool_run(self.name, self.target):
             print "Record found in run history for " +self.name + " on " + self.target
-            response = raw_input("Would you like to re-run the tool? [n]")
-            if "y" in response or "Y" in response:
-                run_tool = True
+            if core.prompt_tool_reruns:
+                response = raw_input("Would you like to re-run the tool? [n]")
+                if "y" in response or "Y" in response:
+                    run_tool = True
+                else:
+                    run_tool = False
             else:
                 run_tool = False
-                
         if not run_tool:
             return
         

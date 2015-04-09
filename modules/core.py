@@ -27,6 +27,7 @@ output_dir = ''
 website_output_format = 'pdf'
 suppress_out = False
 limit_email_domains = True
+prompt_tool_reruns = False
 aggressive = False
 dbfilename = ''
 projectname = ''

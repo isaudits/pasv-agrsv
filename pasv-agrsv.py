@@ -75,6 +75,7 @@ try:
     modules.core.website_output_format = config.get("main_config", "website_output_format")
     modules.core.suppress_out = config.getboolean("main_config", "suppress_out")
     modules.core.limit_email_domains = config.getboolean("main_config", "limit_email_domains")
+    modules.core.prompt_tool_reruns = config.getboolean("main_config", "prompt_tool_reruns")
 except:
     logging.error("Missing required config file sections. Check running config file against provided example\n")
     modules.core.exit_program()
