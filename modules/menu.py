@@ -128,7 +128,8 @@ def add_target():
     db.add_host_to_db()
 
 def list_targets():
-    db.get_hosts_from_db("",True)
+    db.get_hosts_from_db("",False)
+    db.get_hostnames_from_db("",True)
 
 def list_people():
     db.get_people_from_db("",True)
