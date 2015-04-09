@@ -190,8 +190,8 @@ def add_host_to_db(ip=None, hostnames=[]):
     if not ip and not hostnames:
         print "Enter ip of target to add (leave blank if only a hostname)"
         ip = raw_input(" >>  ")
-        print "Enter hostname(s) of target to add, separated by commas (leave blank if only an ip)"
-        hostnames = raw_input(" >>  ")
+        print "Enter hostname(s) of target to add, separated by spaces (leave blank if only an ip)"
+        hostnames = raw_input(" >>  ").split()
     
     db_host = Host.query.filter_by(ip=ip).first()
     if not db_host:
