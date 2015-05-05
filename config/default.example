@@ -19,6 +19,10 @@ output_dir = output/
 # Suppress tool output to terminal
 suppress_out = false
 
+# Prompt for re-run of tools on targets if detected they have already been run
+# Set to false (default) to just skip duplicate tool runs
+prompt_tool_reruns = false
+
 # Output format for cutycapt to output webpages
 # svg,ps,pdf,itext,html,rtree,png,jpeg,mng,tiff,gif,bmp,ppm,xbm,xpm
 website_output_format = pdf
