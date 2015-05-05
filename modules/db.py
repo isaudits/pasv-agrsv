@@ -24,7 +24,12 @@ except:
     print "[-] Import failed. Elixir library not found. \nTry installing it with: apt-get install python-elixir"
     exit(0)
 '''
-    
+# fix SQLAlchemy version issue with Elixir - 0.8 changed location of ScopedSession
+#http://stackoverflow.com/questions/14201210/impossible-to-initialize-elixir
+import sqlalchemy.orm
+sqlalchemy.orm.ScopedSession = sqlalchemy.orm.scoped_session
+
+
 from elixir import metadata, using_options, Entity, Field
 from elixir import create_all, setup_all, session
 from elixir import Unicode, UnicodeText, Integer, String, BLOB
