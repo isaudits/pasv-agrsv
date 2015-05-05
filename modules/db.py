@@ -14,8 +14,15 @@ import logging
 import os
 import core
 
-''' temporarily removed Elixir dependency check due to reported bug in Kali - pending investigation
 try:
+    # fix SQLAlchemy version issue with Elixir - 0.8 changed location of ScopedSession
+    #http://stackoverflow.com/questions/14201210/impossible-to-initialize-elixir
+    from sqlalchemy.orm import scoped_session as ScopedSession
+except:
+    # have correct version - keep on rolling
+    pass
+
+try:  
     from elixir import metadata, using_options, Entity, Field
     from elixir import create_all, setup_all, session
     from elixir import Unicode, UnicodeText, Integer, String, BLOB
@@ -23,17 +30,6 @@ try:
 except:
     print "[-] Import failed. Elixir library not found. \nTry installing it with: apt-get install python-elixir"
     exit(0)
-'''
-# fix SQLAlchemy version issue with Elixir - 0.8 changed location of ScopedSession
-#http://stackoverflow.com/questions/14201210/impossible-to-initialize-elixir
-import sqlalchemy.orm
-sqlalchemy.orm.ScopedSession = sqlalchemy.orm.scoped_session
-
-
-from elixir import metadata, using_options, Entity, Field
-from elixir import create_all, setup_all, session
-from elixir import Unicode, UnicodeText, Integer, String, BLOB
-from elixir import OneToMany, ManyToMany, ManyToOne, OneToOne
 
 class Database:
     # TODO: sanitise dbfilename
