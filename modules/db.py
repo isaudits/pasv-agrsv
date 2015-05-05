@@ -14,6 +14,7 @@ import logging
 import os
 import core
 
+''' temporarily removed Elixir dependency check due to reported bug in Kali - pending investigation
 try:
     from elixir import metadata, using_options, Entity, Field
     from elixir import create_all, setup_all, session
@@ -22,6 +23,12 @@ try:
 except:
     print "[-] Import failed. Elixir library not found. \nTry installing it with: apt-get install python-elixir"
     exit(0)
+'''
+    
+from elixir import metadata, using_options, Entity, Field
+from elixir import create_all, setup_all, session
+from elixir import Unicode, UnicodeText, Integer, String, BLOB
+from elixir import OneToMany, ManyToMany, ManyToOne, OneToOne
 
 class Database:
     # TODO: sanitise dbfilename
