@@ -233,3 +233,11 @@ output_format = html
 run_dns = true
 output_subdir = hosts
 aggressive = true
+email_regex = (\b[\w._-]+@[\w._-]+\.[\w]{2,4}\b)
+
+[nmap-email-harvester]
+command = nmap -p80,443 --script=http-email-harvest [TARGET]
+run_dns = true
+output_subdir = hosts
+aggressive = true
+email_regex = (\b[\w._-]+@[\w._-]+\.[\w]{2,4}\b)
