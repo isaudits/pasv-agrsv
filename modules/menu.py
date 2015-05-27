@@ -71,7 +71,8 @@ def main_menu():
         print "7. Run enumeration on identified domains / targets"
         print "8. Run enumeration on domains only"
         print "9. Run enumeration on targets only"
-        print "\n0. Quit"
+        print "0. Export data to output directory"
+        print "\nq. Quit"
     
         # Menu definition
         menu_actions = {
@@ -85,7 +86,8 @@ def main_menu():
            '7': run_all,
            '8': run_domain,
            '9': run_host,
-           '0': exit
+           '0': export_data,
+           'q': exit
        }
        
         choice = raw_input(" >>  ")
@@ -136,13 +138,20 @@ def list_people():
 
 def run_all():
     tools.run_all()
+    db.export_summary_data(core.output_dir)
 
 def run_domain():
     tools.run_domain_tools()
+    db.export_summary_data(core.output_dir)
 
 def run_host():
     tools.run_host_tools()
+    db.export_summary_data(core.output_dir)
 
+def export_data():
+    outpath = os.path.join(core.output_dir, "export")
+    db.export_all(outpath)
+    print "Data exported to "+outpath
 
 # Test code
 if __name__ == "__main__":

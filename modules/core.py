@@ -120,14 +120,18 @@ def execute(command, suppress_stdout=False):
         logging.error("[!] Exception: %s" % exception)
         return ""
 
-def write_outfile(path, filename, output_text):
+def write_outfile(path, filename, output_text, overwrite=False):
     if output_text:
         if not os.path.exists(path):
             os.makedirs(path)
             
         outfile = os.path.join(path, filename)
         
-        file = open(outfile, 'a+')
+        if overwrite==True:
+            file = open(outfile,'w+')
+        else:
+            file = open(outfile, 'a+')
+            
         file.write(output_text)
         file.close
 

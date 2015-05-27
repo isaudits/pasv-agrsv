@@ -246,16 +246,19 @@ def check_if_tool_run(tool, target):
         return True
     else:
         return False
-
-def export(path):
+    
+def export_all(path):
     '''
     Exports all data in database into a specified path
     '''
+    export_summary_data(path)
+    export_tool_output(path)
+
+def export_summary_data(path):
     db_domains = get_domains_from_db('',False,True)
     db_hosts = get_hosts_from_db('',False,True)
     db_hostnames = get_hostnames_from_db('',False,True)
     db_people = get_people_from_db('',False,True)
-    db_toolruns = get_toolruns_from_db('',False,True)
     
     list_domains=''
     list_hosts=''
@@ -274,10 +277,19 @@ def export(path):
     for item in db_people:
         list_people += item.email + '\n'
 
-    core.write_outfile(path, "domains.txt", list_domains)
-    core.write_outfile(path, "hosts.txt", list_hosts)
-    core.write_outfile(path, "hostnames.txt", list_hostnames)
-    core.write_outfile(path, "people.txt", list_people)
+    core.write_outfile(path, "domains.txt", list_domains, True)
+    core.write_outfile(path, "hosts.txt", list_hosts, True)
+    core.write_outfile(path, "hostnames.txt", list_hostnames, True)
+    core.write_outfile(path, "people.txt", list_people, True)
+    
+def export_tool_output(path):
+    '''
+    Exports all data in database into a specified path
+    '''
+
+    db_toolruns = get_toolruns_from_db('',False,True)
+    
+
     
     for item in db_toolruns:
         filename = item.tool+ "_" + item.target
