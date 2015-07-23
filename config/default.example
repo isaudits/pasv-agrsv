@@ -103,16 +103,19 @@ cleanup_regex = .*0m(.*)
 email_regex = (\b[\w._-]+@[\w._-]+\.[\w]{2,4}\b)
 output_subdir = domain
 
-[fierce]
-command = fierce -dns [TARGET]
-run_domain = true
-ip_regex = (\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)(?!-)
-dns_regex = (?:\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)\s(.*)
-output_subdir = domain
+## Note - fierce will sometimes stumble on wildcard domains and generate massive amounts of junk
+## Comment out if this happens!
+#[fierce]
+#command = fierce -dns [TARGET]
+#run_domain = true
+#ip_regex = (\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)(?!-)
+#dns_regex = (?:\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)\s(.*)
+#output_subdir = domain
 
 [dnsrecon]
 #TODO - need to add SPF and possibly selected MX record checks to ip/dns regex
-command = dnsrecon -d [TARGET] -a -s -g -z
+#command = dnsrecon -d [TARGET] -a -s -g -z
+command =  dnsrecon -d [TARGET] -t std,brt,srv,axfr,goo -D /usr/share/dnsrecon/namelist.txt
 run_domain = true
 ip_regex = \sA\s.*\s(\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b)
 dns_regex = \sA\s(\S*)\s
