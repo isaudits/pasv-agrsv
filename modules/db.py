@@ -12,7 +12,7 @@ See README.md for licensing information and credits
 '''
 import logging
 import os
-import core
+import output
 
 try:
     # fix SQLAlchemy version issue with Elixir - 0.8 changed location of ScopedSession
@@ -253,6 +253,7 @@ def export_all(path):
     '''
     export_summary_data(path)
     export_tool_output(path)
+    output.write_html_index(path)
 
 def export_summary_data(path):
     path = os.path.join(path,"summary")
@@ -278,10 +279,10 @@ def export_summary_data(path):
     for item in db_people:
         list_people += item.email + '\n'
 
-    core.write_outfile(path, "domains.txt", list_domains, True)
-    core.write_outfile(path, "hosts.txt", list_hosts, True)
-    core.write_outfile(path, "hostnames.txt", list_hostnames, True)
-    core.write_outfile(path, "people.txt", list_people, True)
+    output.write_outfile(path, "domains.txt", list_domains, True)
+    output.write_outfile(path, "hosts.txt", list_hosts, True)
+    output.write_outfile(path, "hostnames.txt", list_hostnames, True)
+    output.write_outfile(path, "people.txt", list_people, True)
     
 def export_tool_output(path):
     '''
@@ -300,7 +301,7 @@ def export_tool_output(path):
             
         if not item.output_file:
             filename+=".txt"
-            core.write_outfile(outpath, filename, item.output)
+            output.write_outfile(outpath, filename, item.output)
         else:
             filename+="."+item.output_filetype
             with open(os.path.join(outpath,filename), "wb") as output_file:

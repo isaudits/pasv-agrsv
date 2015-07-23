@@ -14,6 +14,7 @@ import sys, os
 import core
 import db
 import tools
+import output
  
 # Main definition - constants
 menu_actions  = {}  
@@ -139,14 +140,17 @@ def list_people():
 def run_all():
     tools.run_all()
     db.export_summary_data(core.output_dir)
+    output.write_html_index(core.output_dir)
 
 def run_domain():
     tools.run_domain_tools()
     db.export_summary_data(core.output_dir)
+    output.write_html_index(core.output_dir)
 
 def run_host():
     tools.run_host_tools()
     db.export_summary_data(core.output_dir)
+    output.write_html_index(core.output_dir)
 
 def export_data():
     outpath = os.path.join(core.output_dir, "export")

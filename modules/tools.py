@@ -14,6 +14,7 @@ import re
 import os
 import core
 import db
+import output
 
 
 class Tool:
@@ -123,7 +124,7 @@ class Instance(Tool):
             
             #if no output directory is specified or tool outputs to file itself, then only output to screen...
             if self.output_dir and not self.output_format:
-                core.write_outfile(os.path.join(self.output_dir, self.output_subdir), self.name+ "_" + self.target + ".txt", self.command_result)
+                output.write_outfile(os.path.join(self.output_dir, self.output_subdir), self.name+ "_" + self.target + ".txt", self.command_result)
             
             if self.email_regex:
                 self.emails = sorted(list(set(re.findall(self.email_regex, self.command_result))))
