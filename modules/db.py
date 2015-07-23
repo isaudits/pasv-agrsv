@@ -255,6 +255,7 @@ def export_all(path):
     export_tool_output(path)
 
 def export_summary_data(path):
+    path = os.path.join(path,"summary")
     db_domains = get_domains_from_db('',False,True)
     db_hosts = get_hosts_from_db('',False,True)
     db_hostnames = get_hostnames_from_db('',False,True)
