@@ -167,7 +167,7 @@ class Instance(Tool):
         if self.url:
             self.url = self.url.replace("[TARGET]", self.target)
             output_file_path = os.path.join(self.output_dir, self.output_subdir, self.name + "_" + self.target + "." + self.website_output_format)
-            command = "cutycapt --url="+self.url+" --out="+ output_file_path
+            command = "cutycapt --url="+self.url+"--delay=1000 --out="+ output_file_path
             core.execute(command, self.suppress_out)
             
             db.add_run_to_db(self.name, self.target, self.command, self.command_result, output_file_path, self.website_output_format, self.start_time, self.end_time, self.output_subdir)
