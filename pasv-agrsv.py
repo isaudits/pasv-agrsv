@@ -19,7 +19,8 @@ import modules.tools
 import modules.db
 import modules.menu
 
-
+#Change the working directory to the main program directory just in case...
+os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 #------------------------------------------------------------------------------
 # Configure Argparse to handle command line arguments
