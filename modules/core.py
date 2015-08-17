@@ -65,6 +65,19 @@ def check_config(config_file):
         logging.warn("Specified config file not found. Copying example config file...")
         shutil.copyfile("config/default.example", config_file)
 
+def check_xserver():
+    #Check for $DISPLAY which returns null if no X server; required for cutycapt (cannot run in SSH / headless)
+    if os.environ.get('DISPLAY'):
+        pass
+    else:
+        logging.warn("[!] No X server detected (maybe inside an SSH session?)")
+        logging.warn("[!] Cutycapt for screenshot requires X server...   :(")
+        response = raw_input("Do you wish to continue (screenshot functions will be skipped)? [no] ")
+        if "y" in response or "Y" in response:
+            pass
+        else:       
+            exit_program()
+                
 def connect_db(db_name):
     global dbfilename
     

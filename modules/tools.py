@@ -168,10 +168,14 @@ class Instance(Tool):
             self.url = self.url.replace("[TARGET]", self.target)
             output_file_path = os.path.join(self.output_dir, self.output_subdir, self.name + "_" + self.target + "." + self.website_output_format)
             command = "cutycapt --url="+self.url+"--delay=1000 --out="+ output_file_path
-            core.execute(command, self.suppress_out)
             
-            db.add_run_to_db(self.name, self.target, self.command, self.command_result, output_file_path, self.website_output_format, self.start_time, self.end_time, self.output_subdir)
-
+            #Check for $DISPLAY which returns null if no X server; required for cutycapt (cannot run in SSH / headless)
+            if os.environ.get('DISPLAY'):
+                core.execute(command, self.suppress_out)
+                db.add_run_to_db(self.name, self.target, self.command, self.command_result, output_file_path, self.website_output_format, self.start_time, self.end_time, self.output_subdir)
+            else:
+                print "[!] No X server detected (maybe inside an SSH session?)"
+                print "[!] Cutycapt for screenshot requires X server...skipping...   :("
 def run_all():
     
     run_domain_tools()

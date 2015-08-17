@@ -66,6 +66,7 @@ logging.debug('Debug mode enabled')
 #------------------------------------------------------------------------------
 # Get config file parameters
 #------------------------------------------------------------------------------
+modules.core.check_xserver()
 modules.core.check_config(config_file)
 config = ConfigParser.SafeConfigParser()
 config.read(config_file)
