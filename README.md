@@ -40,10 +40,14 @@ systems with required dependencies.
 
 ###Python Module Dependencies:
 - pyPdf (installed on Kali Linux by default)
-- elixir (apt-get install python-elixir)
+- elixir `apt-get install python-elixir`
 
 ###Binary Dependencies:
 - cutycapt (installed on Kali Linux by default)
+
+###Dependencies in default tool config file:
+- webshag (installed by default on Kali 1.x but not 2.x)
+    `apt-get install webshag`
 
 --------------------------------------------------------------------------------
 ##Todo
