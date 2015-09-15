@@ -62,12 +62,12 @@ def write_html_index(output_dir):
     #-----------------------------------------------------------
     # Output data
     
-    for dirname in os.listdir(output_dir):
+    for dirname in sorted(os.listdir(output_dir)):
         if (not dirname == "db") and (not dirname == "summary"):
             html_body += "<h3>" + dirname +"</h3>\n"
         
             try:
-                for fname in os.listdir(os.path.join(output_dir,dirname)):
+                for fname in sorted(os.listdir(os.path.join(output_dir,dirname))):
                     html_body += " <a href='" + dirname +"/"+ fname + "'>" + fname + "</a><br>\n"
             except:
                 pass

@@ -135,7 +135,7 @@ def is_hostname_in_db(querytext):
     return False
 
 def get_hosts_from_db(filters='',pause=False,suppress_screen=False):
-    result = Host.query.filter(Host.ip.contains(filters)).all()
+    result = Host.query.filter(Host.ip.contains(filters)).order_by(Host.ip).all()
     
     if not suppress_screen:
         for item in result:
@@ -145,7 +145,7 @@ def get_hosts_from_db(filters='',pause=False,suppress_screen=False):
     return result
 
 def get_domains_from_db(filters='',pause=False,suppress_screen=False):
-    result = Domain.query.filter(Domain.domain.contains(filters)).all()
+    result = Domain.query.filter(Domain.domain.contains(filters)).order_by(Domain.domain).all()
     
     if not suppress_screen:
         for item in result:
@@ -155,7 +155,7 @@ def get_domains_from_db(filters='',pause=False,suppress_screen=False):
     return result
 
 def get_hostnames_from_db(filters='',pause=False,suppress_screen=False):
-    result = Hostname.query.filter(Hostname.hostname.contains(filters)).all()
+    result = Hostname.query.filter(Hostname.hostname.contains(filters)).order_by(Hostname.hostname).all()
     
     if not suppress_screen:
         for item in result:
@@ -165,7 +165,8 @@ def get_hostnames_from_db(filters='',pause=False,suppress_screen=False):
     return result
 
 def get_people_from_db(filters='',pause=False,suppress_screen=False):
-    result = Person.query.filter(Person.email.contains(filters)).all()
+    result = Person.query.filter(Person.email.contains(filters)).order_by(Person.email).all()
+    
     for item in result:
         print item.email
     if pause:
@@ -210,7 +211,7 @@ def add_host_to_db(ip=None, hostnames=[]):
         if not db_hostname:
             db_hostname = Hostname(name, [db_host])
             
-        session.commit()
+    session.commit()
     
 def add_person_to_db(email):
     db_person = Person.query.filter_by(email=email).first()
