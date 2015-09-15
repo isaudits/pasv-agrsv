@@ -78,14 +78,14 @@ def check_xserver():
         else:       
             exit_program()
                 
-def connect_db(db_name):
+def connect_db(projectname):
     global dbfilename
     
     db_dir = os.path.join(output_dir, "db")
     if not os.path.exists(db_dir):
         os.makedirs(db_dir)
                 
-    dbfilename = os.path.join(db_dir,db_name+".sqlite3")
+    dbfilename = os.path.join(db_dir,"db.sqlite3")
     db.Database(dbfilename)
 
 def change_project(project_name=''):
