@@ -25,6 +25,7 @@ class Tool:
         self.name = ""
         self.command = ""
         self.url = ""
+        self.delay="1000"
         self.run_domain = False
         self.run_ip = False
         self.run_dns = False
@@ -61,6 +62,7 @@ class Instance(Tool):
         self.name = tool.name
         self.command = tool.command
         self.url = tool.url
+        self.delay = tool.delay
         self.run_domain = tool.run_domain
         self.run_ip = tool.run_ip
         self.run_dns = tool.run_dns
@@ -167,7 +169,7 @@ class Instance(Tool):
         if self.url:
             self.url = self.url.replace("[TARGET]", self.target)
             output_file_path = os.path.join(self.output_dir, self.output_subdir, self.name + "_" + self.target + "." + self.website_output_format)
-            command = "cutycapt --url="+self.url+" --delay=1000 --out="+ output_file_path
+            command = "cutycapt --url="+self.url+" --delay="+self.delay+" --out="+output_file_path
             
             #Check for $DISPLAY which returns null if no X server; required for cutycapt (cannot run in SSH / headless)
             if os.environ.get('DISPLAY'):

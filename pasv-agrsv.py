@@ -97,6 +97,8 @@ for section in config.sections():
             tool.command = config.get(tool.name,"command")
         if config.has_option(tool.name, "url"):
             tool.url = config.get(tool.name,"url")
+        if config.has_option(tool.name, "delay"):
+            tool.delay = config.get(tool.name,"delay")
         if config.has_option(tool.name, "run_domain"):
             tool.run_domain = config.getboolean(tool.name,"run_domain")
         if config.has_option(tool.name, "run_ip"):
