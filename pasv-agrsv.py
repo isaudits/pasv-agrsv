@@ -105,6 +105,8 @@ for section in config.sections():
             tool.run_ip = config.getboolean(tool.name,"run_ip")
         if config.has_option(tool.name, "run_dns"):
             tool.run_dns = config.getboolean(tool.name,"run_dns")
+        if config.has_option(tool.name, "run_once"):
+            tool.run_once = config.getboolean(tool.name,"run_once")
         if config.has_option(tool.name, "email_regex"):
             tool.email_regex = config.get(tool.name,"email_regex")
         if config.has_option(tool.name, "ip_regex"):

@@ -29,6 +29,7 @@ class Tool:
         self.run_domain = False
         self.run_ip = False
         self.run_dns = False
+        self.run_once = False
         self.email_regex = ""
         self.ip_regex = ""
         self.dns_regex = ""
@@ -66,6 +67,7 @@ class Instance(Tool):
         self.run_domain = tool.run_domain
         self.run_ip = tool.run_ip
         self.run_dns = tool.run_dns
+        self.run_once = tool.run_once
         self.email_regex = tool.email_regex
         self.ip_regex = tool.ip_regex
         self.dns_regex = tool.dns_regex
@@ -107,6 +109,7 @@ class Instance(Tool):
             output_file_path = os.path.join(self.output_dir, self.output_subdir, self.name + "_" + self.target + "." + self.output_format)
             self.command = self.command.replace("[TARGET]", self.target)
             self.command = self.command.replace("[OUTPUT]", output_file_path)
+            self.command = self.command.replace("[PROJECT]", core.projectname)
             
             print self.command
             
@@ -182,6 +185,7 @@ def run_all():
     
     run_domain_tools()
     run_host_tools()
+    run_once_tools()
 
 def run_domain_tools():
     domains=db.get_domains_from_db()
@@ -240,6 +244,20 @@ def run_host_tools():
                 
                 instance.run()
                 core.instances.append(instance)
+
+def run_once_tools():
+    for tool in core.tools:
+        if tool.run_once == True:
+            instance = Instance()
+            instance.build_instance_from_tool(tool)
+            
+            instance.output_dir = core.output_dir
+            instance.suppress_out = core.suppress_out
+            instance.website_output_format = core.website_output_format
+            
+            instance.run()
+            core.instances.append(instance)
+    
     
     print "\n" + "-"*80 + "\n"
         

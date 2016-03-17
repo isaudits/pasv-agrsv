@@ -36,6 +36,7 @@ limit_email_domains = true
 # Tool config section
 #
 # Placeholders will be replaced as follows during script execution:
+#   [PROJECT] - will be replaced with project name
 #   [TARGET] - domain specified in command line or target IP addresses discovered
 #   [OUTPUT] - will be replaced with output file name for tools that output to
 #               file instead of screen
@@ -220,8 +221,150 @@ url = "http://toolbar.netcraft.com/site_report?url=[TARGET]"
 run_dns = true
 output_subdir = hosts
 
+
 #####################################################################
-# Aggressive tests
+# Recon-ng
+#####################################################################
+[recon-ng-add-domain]
+command = recon-cli -w [PROJECT] -C "add domains [TARGET]"
+run_domain = true
+output_format=none
+
+#[recon-ng-metacrawler]
+#command = recon-cli -x -w [PROJECT] -m recon/domains-contacts/metacrawler
+#run_once = true
+#output_format=none
+
+[recon-ng-pgp_search]
+command = recon-cli -x -w [PROJECT] -m recon/domains-contacts/pgp_search
+run_once = true
+output_format=none
+
+[recon-ng-salesmaple]
+command = recon-cli -x -w [PROJECT] -m recon/domains-contacts/salesmaple
+run_once = true
+output_format=none
+
+[recon-ng-whois]
+command = recon-cli -x -w [PROJECT] -m recon/domains-contacts/whois_pocs
+run_once=true
+output_format=none
+
+[recon-ng-baidu_site]
+command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/baidu_site
+run_once = true
+output_format=none
+
+[recon-ng-bing_domain_api]
+command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/bing_domain_api
+run_once = true
+output_format=none
+
+[recon-ng-bing_domain_web]
+command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/bing_domain_web
+run_once = true
+output_format=none
+
+[recon-ng-brute_hosts]
+command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/brute_hosts
+run_once = true
+output_format=none
+
+[recon-ng-google_site_api]
+command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/google_site_api
+run_once = true
+
+#[recon-ng-google_site_web]
+#command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/google_site_web
+#run_once = true
+#output_format=none
+
+[recon-ng-netcraft]
+command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/netcraft
+run_once = true
+
+[recon-ng-shodan_hostname]
+command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/shodan_hostname
+run_once = true
+output_format=none
+
+[recon-ng-ssl_san]
+command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/ssl_san
+run_once = true
+
+[recon-ng-vpnhunter]
+command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/vpnhunter
+run_once = true
+
+[recon-ng-yahoo_domain]
+command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/yahoo_domain
+run_once = true
+output_format=none
+
+[recon-ng-ghdb]
+command = recon-cli -x -w [PROJECT] -m recon/domains-vulnerabilities/ghdb
+run_once = true
+output_format=none
+
+[recon-ng-punkspider]
+command = recon-cli -x -w [PROJECT] -m recon/domains-vulnerabilities/punkspider
+run_once = true
+output_format=none
+
+[recon-ng-xssed]
+command = recon-cli -x -w [PROJECT] -m recon/domains-vulnerabilities/xssed
+run_once = true
+output_format=none
+
+[recon-ng-xssposed]
+command = recon-cli -x -w [PROJECT] -m recon/domains-vulnerabilities/xssposed
+run_once = true
+
+[recon-ng-bing_ip]
+command = recon-cli -x -w [PROJECT] -m recon/hosts-hosts/bing_ip
+run_once = true
+output_format=none
+
+[recon-ng-ip_neighbor]
+command = recon-cli -x -w [PROJECT] -m recon/hosts-hosts/ip_neighbor
+run_once = true
+
+[recon-ng-ipinfodb]
+command = recon-cli -x -w [PROJECT] -m recon/hosts-hosts/ipinfodb
+run_once = true
+output_format=none
+
+[recon-ng-resolve]
+command = recon-cli -x -w [PROJECT] -m recon/hosts-hosts/resolve
+run_once = true
+
+[recon-ng-reverse_resolve]
+command = recon-cli -x -w [PROJECT] -m recon/hosts-hosts/reverse_resolve
+run_once = true
+output_format=none
+
+[recon-ng-ssltools]
+command = recon-cli -x -w [PROJECT] -m recon/hosts-hosts/ssltools
+run_once = true
+
+[recon-ng-shodan_ip]
+command = recon-cli -x -w [PROJECT] -m recon/hosts-ports/shodan_ip
+run_once = true
+output_format=none
+
+[recon-ng-freegeoip]
+command = recon-cli -x -w [PROJECT] -m recon/hosts-hosts/freegeoip
+run_once = true
+output_format=none
+
+[recon-ng-report]
+command = recon-cli -x -w [PROJECT] -m reporting/html -o Filename=$PWD/[OUTPUT] -o CREATOR="pasv-agrsv by IS Audits & Consulting" -o Customer="[PROJECT]"
+output_format = html
+run_once = true
+output_subdir = domain  
+
+#####################################################################
+# Aggressive tests  
 #####################################################################
 
 [website-screenshot]
