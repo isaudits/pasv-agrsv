@@ -273,6 +273,7 @@ output_format=none
 [recon-ng-google_site_api]
 command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/google_site_api
 run_once = true
+output_format=none
 
 #[recon-ng-google_site_web]
 #command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/google_site_web
@@ -282,6 +283,7 @@ run_once = true
 [recon-ng-netcraft]
 command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/netcraft
 run_once = true
+output_format=none
 
 [recon-ng-shodan_hostname]
 command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/shodan_hostname
@@ -291,10 +293,12 @@ output_format=none
 [recon-ng-ssl_san]
 command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/ssl_san
 run_once = true
+output_format=none
 
 [recon-ng-vpnhunter]
 command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/vpnhunter
 run_once = true
+output_format=none
 
 [recon-ng-yahoo_domain]
 command = recon-cli -x -w [PROJECT] -m recon/domains-hosts/yahoo_domain
@@ -319,6 +323,7 @@ output_format=none
 [recon-ng-xssposed]
 command = recon-cli -x -w [PROJECT] -m recon/domains-vulnerabilities/xssposed
 run_once = true
+output_format=none
 
 [recon-ng-bing_ip]
 command = recon-cli -x -w [PROJECT] -m recon/hosts-hosts/bing_ip
@@ -328,6 +333,7 @@ output_format=none
 [recon-ng-ip_neighbor]
 command = recon-cli -x -w [PROJECT] -m recon/hosts-hosts/ip_neighbor
 run_once = true
+output_format=none
 
 [recon-ng-ipinfodb]
 command = recon-cli -x -w [PROJECT] -m recon/hosts-hosts/ipinfodb
@@ -337,6 +343,7 @@ output_format=none
 [recon-ng-resolve]
 command = recon-cli -x -w [PROJECT] -m recon/hosts-hosts/resolve
 run_once = true
+output_format=none
 
 [recon-ng-reverse_resolve]
 command = recon-cli -x -w [PROJECT] -m recon/hosts-hosts/reverse_resolve
@@ -346,6 +353,7 @@ output_format=none
 [recon-ng-ssltools]
 command = recon-cli -x -w [PROJECT] -m recon/hosts-hosts/ssltools
 run_once = true
+output_format=none
 
 [recon-ng-shodan_ip]
 command = recon-cli -x -w [PROJECT] -m recon/hosts-ports/shodan_ip
