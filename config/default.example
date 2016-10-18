@@ -203,6 +203,11 @@ url = "https://www.shodan.io/search?query=[TARGET]"
 run_ip = true
 output_subdir = hosts
 
+[antihackeralliance]
+url= "http://anti-hacker-alliance.com/index.php?ip=[TARGET]"
+run_ip=true
+output_subdir = hosts
+
 #####################################################################
 # Discovered hosts (DNS names)
 #
@@ -388,13 +393,6 @@ aggressive = true
 #since we use those for naming the run output, only run on dns
 command = webshag-cli -m spider -x -f [OUTPUT] [TARGET]
 output_format = html
-run_dns = true
-output_subdir = hosts
-aggressive = true
-email_regex = (\b[\w._-]+@[\w._-]+\.[\w]{2,4}\b)
-
-[nmap-email-harvester]
-command = nmap -p80,443 --script=http-email-harvest [TARGET]
 run_dns = true
 output_subdir = hosts
 aggressive = true
