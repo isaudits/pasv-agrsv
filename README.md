@@ -2,7 +2,6 @@ pasv-agrsv.py
 ===========
 
 Passive recon / OSINT automation script:
-
 - Runs passive recon tools specified in config file given a TLD
 - Extracts email addresses, IP addresses, and DNS names from tool output using
 regex
@@ -16,7 +15,7 @@ from initial TLD analysis
 hosts (e.g. screenshot and spider a website)
 
 --------------------------------------------------------------------------------
-##Notes
+## Notes
 By default, the application runs in interactive mode allowing the user to select
 a project name / output directory as well as add multiple TLDs for analysis
 before executing scripted tasks. Optionally, a single domain can be specified
@@ -36,22 +35,21 @@ Script tested on Kali Linux as well as OSX and should function on UNIX-based
 systems with required dependencies.
 
 --------------------------------------------------------------------------------
-##Dependencies
+## Dependencies
 
-###Python Module Dependencies:
+### Python Module Dependencies:
 - pyPdf (installed on Kali Linux by default)
 - elixir `apt-get install python-elixir`
 
-###Binary Dependencies:
+### Binary Dependencies:
 - cutycapt (installed on Kali Linux by default)
 
-###Dependencies in default tool config file:
+### Dependencies in default tool config file:
 - webshag (installed by default on Kali 1.x but not 2.x)
     `apt-get install webshag`
 
 --------------------------------------------------------------------------------
-##Todo
-
+## Todo
 - Email domain filter currently only excludes emails not matching the active
 domain during TLD phase
 - HTML index page to summarize all output
